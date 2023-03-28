@@ -15,15 +15,16 @@ interface Props {
     closeForm: () => void;
     upsertHandler: (activity : Activity) => void
     handleDelete: (id: string) => void
-
+    submitting: boolean
 }
 
 const ActivitiesDashboard = ({activities,handleDelete, selectedActivity, selectActivity, cancelActivity, 
-          editMode, openForm, closeForm, upsertHandler} : Props) => {
+          editMode, openForm, closeForm, upsertHandler,submitting} : Props) => {
   return (
     <Grid>
         <Grid.Column width='10'>
-            <ActivityList activities={activities} selectActivity = {selectActivity} handleDelete = {handleDelete}/>
+            <ActivityList activities={activities} selectActivity = {selectActivity} handleDelete = {handleDelete}
+            submitting={submitting}/>
         </Grid.Column>
         <Grid.Column width='6'>
             {selectedActivity && !editMode &&
@@ -33,7 +34,12 @@ const ActivitiesDashboard = ({activities,handleDelete, selectedActivity, selectA
               openForm = {openForm}
             />}
             {editMode &&
-            <ActivityForm closeForm = {closeForm} activity = {selectedActivity} upsertHandler ={upsertHandler}/>}
+            <ActivityForm 
+              closeForm = {closeForm} 
+              activity = {selectedActivity} 
+              upsertHandler ={upsertHandler}
+              submitting = {submitting}
+            />}
         </Grid.Column>
     </Grid>
   )
