@@ -1,27 +1,24 @@
 import React, { SyntheticEvent, useState } from 'react'
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
-import { Activity } from '../../models/activity'
+import { useStore } from '../../stores/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-    activities: Activity[];
-    selectActivity: (id : string) => void;
-    handleDelete: (id: string) => void
-    submitting: boolean
-}
-
-const ActivityList = ({activities, selectActivity, handleDelete,submitting} : Props) => {
+const ActivityList = () => {
+    const {activityStore} = useStore()
+    const {activitiesByDate, deleteActivity, loading} = activityStore
     const [target,setTarget] = useState('')
 
     function handleDeleteActivity(e: SyntheticEvent<HTMLButtonElement>,id: string){
         setTarget(e.currentTarget.name)
-        handleDelete(id)
+        deleteActivity(id)
 
     }
+
 
   return (
     <Segment>
         <Item.Group divided>
-            {activities.map(activity =>(
+            {activitiesByDate.map(activity =>(
                 <Item key={activity.id}>
                     <Item.Content>
                         <Item.Header as='a'>{activity.title}</Item.Header>
@@ -31,10 +28,10 @@ const ActivityList = ({activities, selectActivity, handleDelete,submitting} : Pr
                             <div>{activity.city}</div>
                         </Item.Description>
                         <Item.Extra>
-                            <Button onClick={() => selectActivity(activity.id)} floated='right' content='View' color='blue' />
+                            <Button onClick={() => activityStore.selectActivity(activity.id)} floated='right' content='View' color='blue' />
                             <Button 
                                 name={activity.id}
-                                loading={submitting && target === activity.id} 
+                                loading={loading && target === activity.id} 
                                 onClick={(e) => handleDeleteActivity(e,activity.id)} 
                                 floated='right' 
                                 content='Delete' 
@@ -50,4 +47,4 @@ const ActivityList = ({activities, selectActivity, handleDelete,submitting} : Pr
   )
 }
 
-export default ActivityList
+export default observer(ActivityList)
