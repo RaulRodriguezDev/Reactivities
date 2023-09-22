@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { Grid } from 'semantic-ui-react'
 import ActivityList from './ActivityList';
-import { useStore } from '../../stores/store';
+import { useStore } from '../../../stores/store';
 import { observer } from 'mobx-react-lite';
-import LoadingComponent from '../../layout/LoadingComponent';
+import LoadingComponent from '../../../layout/LoadingComponent';
+import ActivityFilters from './ActivityFilters';
 
 const ActivitiesDashboard = () => {
 
@@ -21,7 +22,7 @@ const ActivitiesDashboard = () => {
             <ActivityList/>
         </Grid.Column>
         <Grid.Column width='6'>
-            <h2>Activity filters</h2>
+            <ActivityFilters/>
         </Grid.Column>
     </Grid>
   )
